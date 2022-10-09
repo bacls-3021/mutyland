@@ -1,0 +1,46 @@
+<p> Mở tab mới <a href="https://nhadatmuaban.net/dang-tin-rao-vat.html">https://nhadatmuaban.net/dang-tin-rao-vat.html</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<p class='color-red'> Trang web này đăng bài nhanh k cần đăng nhập, nhưng chi đăng đc ở TP HCM, Hà Nội, Đà Nẵng, Hải Phòng (hơi ngu) </p>
+<div class="box">
+  <code class="hightlight">
+    $('#AdsSubject').val(<%= inra(product.title) %>)
+    $('#LoadLBDS').val(Array.from($("#LoadLBDS").find('option')).filter(a => a.innerText.includes(<%= inra(product.specific_type_product('nhadatmatpho')) %>))[0].value)
+    Array.from($("#CityId").find('option')).filter(a => a.innerText.includes("Đã Nẵng"))[0].innerHTML = "Đà Nẵng"
+    $('#CityId').val(Array.from($("#CityId").find('option')).filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value)
+    $('#CityId').trigger('change')
+    setTimeout(function(){
+      $('#LoadQ').val(Array.from($("#LoadQ").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+      $('#LoadQ').trigger('change')
+    }, 500)
+
+    const url = <%= inra(product.product_images.first.full_url) %>
+    const fileName = <%= inra("myFile.jpg") %>
+    var change = new Event('change')
+
+    fetch(url)
+      .then(async response => {
+        const contentType = response.headers.get('content-type')
+        const blob = await response.blob()
+        const file = new File([blob], fileName, { contentType })
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        document.getElementById('file_upload').files = dataTransfer.files
+        document.getElementById('file_upload').dispatchEvent(change)
+    })
+
+    $('#AdsAddress').val(<%= inra(product.full_address) %>)
+    $('#AdsArea').val(<%= inra(product.area) %>)
+    $('#AdsPrice').val(<%= inra(product.price.to_f/1000000) %>)
+    $('#AdsCurrencies').val('Tỷ')
+    $('#AdsBody').val(<%= inra(product.base_description) %>)
+    $('#Guest_Guest_Name').val(<%= inra(product.name) %>)
+    $('#Guest_Guest_Address').val(<%= inra(product.full_address) %>)
+    $('#Guest_Guest_Mobile').val(<%= inra(product.phone) %>)
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+Cách lấy tin:
+Vào <a href="https://nhadatmuaban.net">https://nhadatmuaban.net</a></p> tìm bán đất ở tỉnh/thành: <%= product.province %> quận <%= product.district %>
+Lấy bài viết mới nhất (hơi sida)

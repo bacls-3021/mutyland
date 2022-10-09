@@ -1,0 +1,29 @@
+<%= render "templates/#{@action}/#{@website.template}", product: @product %>
+
+<br>
+
+<%= form_for(Result.new, url: results_path) do |f| %>
+  <%= f.hidden_field :website_id, value: params[:id] %>
+  <%= f.hidden_field :product_id, value: params[:product_id] %>
+  <div class="row">
+    <div class="col-6 mb-3">
+      <div class="form-group">
+        <label>Nhập link kết quả</label>
+        <%= f.text_field :url, class: "form-control" %>
+      </div>
+    </div>
+    <div class="col-6 mb-3">
+      <div class="form-group">
+        <label></label>
+        <div class="row">
+          <div class="col-6">
+            <button class="btn btn-success form-control">Lưu</button>
+          </div>
+          <div class="col-6">
+            <%= link_to "Next", "http://localhost:3000/products/#{params[:product_id]}/websites/#{params[:id].to_i + 1}", class: "btn btn-danger form-control" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

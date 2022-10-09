@@ -1,0 +1,60 @@
+<p> Mở tab mới <a href="https://batdongsan24h.com.vn/dang-tin-nhanh">https://batdongsan24h.com.vn/dang-tin-nhanh</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<p class='color-red'> Trang web này đăng bài nhanh k cần đăng nhập, quận huyện và phường xã bị lỗi k hiển thị(nhưng k vấn đề gì) lấy bài viết hơi rườm rà. Đăng tin thành công phải có thông báo thành công, còn không là bị lỗi.
+ </p>
+<div class="box">
+  <code class="hightlight">
+    $('select[name="Position"]').val(0)
+    $('select[name="Position"]').trigger('change')
+    setTimeout(function(){
+      $('select[name="CategoryId"]').val(Array.from($("select[name='CategoryId'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.specific_type_product('batdongsan24h')) %>))[0].value)
+    }, 500)
+
+    $('select#CityId').val(Array.from($("select#CityId").find('option')).filter(a => a.innerText.includes(<%= inra(@product.specific_province('rongbay')) %>))[0].value)
+    $('select#CityId').trigger('change')
+    setTimeout(function(){
+      $('select[name="DistrictId"]').val(Array.from($("select[name='DistrictId'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+      $('select[name="DistrictId"]').trigger('change')
+      $('#Subject').val(<%= inra(product.title) %>)
+
+      setTimeout(function(){
+        $('select[name="WardId"]').val(Array.from($("select[name='WardId'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+          $('select[name="WardId"]').trigger('change')
+          $('#Subject').val(<%= inra(product.title) %>)
+      }, 500)
+    }, 500)
+
+    $('select[name="Direction"]').val(Array.from($("select[name='Direction'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.direction) %>))[0].value)
+    $('#Body').val(<%= inra(product.base_description) %>)
+    $('input[name="Price"]').val(<%= inra(product.price.to_f/1000000) %>)
+    $('#TypePrice').val(2)
+    $('#Area').val(<%= inra(product.area) %>)
+    $('#ContactName').val(<%= inra(product.name) %>)
+    $('#ContactPhone').val(<%= inra(product.phone) %>)
+
+    var change = new Event('change')
+    <% @product.product_images.each_with_index do |img, i| %>
+      setTimeout(function () {
+        const url<%= i %> = <%= inra(img.full_url) %>
+        const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+        fetch(url<%= i %>)
+          .then(async response => {
+            const contentType<%= i %> = response.headers.get('content-type')
+            const blob<%= i %> = await response.blob()
+            const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+
+            const dataTransfer<%= i %> = new DataTransfer();
+            dataTransfer<%= i %>.items.add(file<%= i %>);
+            document.getElementById('file_upload').files = dataTransfer<%= i %>.files
+            document.getElementById('file_upload').dispatchEvent(change)
+        })
+      }, <%= (i+1) * 500 %>);
+    <% end %>
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+Cách lấy tin:
+Vào <a href="https://batdongsan24h.com.vn">https://batdongsan24h.com.vn</a></p> tìm bán đất ở tỉnh/thành: <%= product.province %> quận <%= product.district %>
+Lấy bài viết mới nhất (hơi sida)

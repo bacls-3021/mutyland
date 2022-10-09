@@ -1,0 +1,165 @@
+<div class="container">
+  <h1>Tạo product</h1>
+
+  <%= form_for(@product, url: products_path) do |form| %>
+    <div class="row">
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Tên người liên hệ</label>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <%= form.text_field :phone, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-12 mb-3">
+        <div class="form-group">
+          <label>Tiêu đề bài viết</label>
+          <%= form.text_field :title, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-12 mb-3">
+        <div class="form-group">
+          <label>Mô tả chi tiết</label>
+          <%= form.text_area :description, class: "form-control", rows: 5 %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Loại bất động sản</label>
+          <%= form.select :type_product, ['Nhà mặt tiền', 'Nhà trong hẻm', 'Biệt thự, nhà liền kề', 'Căn hộ chung cư', 'Phòng trọ, nhà trọ', 'Văn phòng', 'Kho, xưởng', 'Nhà hàng, khách sạn', 'Shop, kiot, quán', 'Trang trại', 'Mặt bằng', 'Đất thổ cư, đất ở', 'Đất nền, liền kề, đất dự án', 'Đất nông, lâm nghiệp', 'Các loại khác'], {}, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Tỉnh/ Thành phố</label>
+          <%= form.text_field :province, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Quận/Huyện</label>
+          <%= form.text_field :district, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Phường/Xã</label>
+          <%= form.text_field :town, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Tên Đường</label>
+          <%= form.text_field :street, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Số nhà/ Địa chỉ (có thể không nhập) </label>
+          <%= form.text_field :address, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Giá chào bán</label>
+          <%= form.text_field :price, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Hướng nhà</label>
+          <%= form.select :direction, ['Đông', 'Tây', 'Nam', 'Bắc', 'Đông Nam', 'Đông Bắc', 'Tây Nam', 'Tây Bắc'], {}, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Diện tích</label>
+          <%= form.text_field :area, class: "form-control" %>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Chiều ngang</label>
+          <%= form.text_field :width, class: "form-control" %>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Chiều dọc</label>
+          <%= form.text_field :height, class: "form-control" %>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Lề đường(chiều dài đường trước nhà)</label>
+          <%= form.text_field :length_street, class: "form-control" %>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Số tầng</label>
+          <%= form.text_field :count_floor, class: "form-control" %>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="form-group">
+          <label>Số phòng ngủ</label>
+          <%= form.text_field :count_bed, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+
+    <h4>Link ảnh</h4>
+
+    <div class="row" id="image-list">
+      <div class="col-6 mb-3">
+        <%= form.fields_for :product_images do |f| %>
+          <label>Link ảnh</label>
+          <%= f.file_field :image, accept: "image/jpeg, image/gif, image/png, image/jpg", class: "form-control" %>
+        <% end %>
+      </div>
+    </div>
+
+
+    <div class="col-6 mb-3">
+      <label></label>
+      <div onClick=addMoreImage() class="btn btn-primary form-control">Thêm ảnh</div>
+    </div>
+
+    <div class="form-group mt-5">
+      <%= form.submit "Submit", class: "btn btn-success w-100" %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  label {
+    font-weight: 600;
+  }
+</style>
+
+<script type="text/javascript">
+  function addMoreImage(){
+    var n = $("#image-list > div").length
+
+    var text = "<div class='col-6 mb-3'><label>Link ảnh</label><input accept='image/jpeg, image/gif, image/png, image/jpg' class='form-control' type='file' name='product[product_images_attributes][" + n + "][image]' id='product_product_images_attributes_" + n + "_image'></div>"
+
+    $("#image-list").append(text)
+  }
+</script>

@@ -1,0 +1,112 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://batdongsanbamien.vn/Account/Register">https://batdongsanbamien.vn/Account/Register</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#Mb_Name').val(<%= inra(product.name) %>)
+    $('#Mb_Email').val(<%= inra(product.email_fake) %>)
+    $('#Mb_Tel').val(<%= inra(product.phone) %>)
+    $('#Mb_Pwd').val('Ketcdlena1@@')
+    $('#Mb_ConfirmPwd').val('Ketcdlena1@@')
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng nhập</span>
+<p> Mở tab mới <a href="https://batdongsanbamien.vn/">https://batdongsanbamien.vn/</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('.login').click()
+    setTimeout(function(){
+      $('#ddlUName').val(<%= inra(product.email_fake) %>)
+      $('#ddlPassword').val('Ketcdlena1@@')
+    }, 500)
+
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<p class="step">Bước 3 Đăng tin</p>
+<p> Mở tab mới <a href="https://batdongsanbamien.vn/Product/Create">https://batdongsanbamien.vn/product/create/</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+      $('#ddlOrder').val('1')
+      $('#ddlOrder').trigger('change')
+      $('#Product_StatusID').val('4')
+      $('#Product_OwnerYN').click()
+      $('#Product_Title').val(<%= inra(product.title) %>)
+      $('#Product_FContent').val(<%= inra(product.base_description) %>)
+      $('select#Product_CatID').val(Array.from($("select#Product_CatID").find('option')).filter(a => a.innerText.includes(<%= inra(@product.specific_type_product('tinbds')) %>))[0].value)
+      $('#Product_Price').val(<%= inra(product.price.to_f/1000000) %>)
+      $('#Product_UCurrencyID').val('4')
+      $('#Product_UPriceID').val('3')
+      $('#Product_Area').val(<%= inra(product.area) %>)
+
+      $('select#ddlCity').val(Array.from($("select#ddlCity").find('option')).filter(a => a.innerText.includes(<%= inra(product.specific_province('rongbay')) %>))[0].value)
+      $('select#ddlCity').trigger('change')
+      setTimeout(function () {
+        $('select[name="ddlDistrict"]').val(Array.from($("select[name='ddlDistrict'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+        $('select[name="ddlDistrict"]').trigger('change')
+        setTimeout(function () {
+          $('select[name="ddlWard"]').val(Array.from($("select[name='ddlWard'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+          $('select[name="ddlWard"]').trigger('change')
+          <% if product.street %>
+            setTimeout(function () {
+              $('select[name="ddlStreet"]').val(Array.from($("select[name='ddlStreet'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+              $('select[name="ddlStreet"]').trigger('change')
+            }, 500)
+          <% end %>
+        }, 500);
+      }, 500);
+
+      $('select#Product_DirectionID').val(Array.from($("select#Product_DirectionID").find('option')).filter(a => a.innerText == <%= inra(@product.direction) %>)[0].value)
+      $('#Product_Floors').val(<%= inra(product.count_floor) %>)
+      $('#Product_Room').val(<%= inra(product.count_bed) %>)
+      $('#Product_Afterwidth').val(<%= inra(product.width) %>)
+      $('#Product_Afterwidth').val(<%= inra(product.width) %>)
+
+      var change = new Event('change')
+      var dataTransfer = new DataTransfer();
+
+      <% product.product_images.each_with_index do |img, i| %>
+        <% break if i == 6 %>
+        <% if i == 0 %>
+          const url<%= i %> = <%= inra(img.full_url) %>
+          const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+          fetch(url<%= i %>)
+            .then(async response => {
+              const contentType<%= i %> = response.headers.get('content-type')
+              const blob<%= i %> = await response.blob()
+              const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+
+              const dataTransfer<%= i %> = new DataTransfer();
+              dataTransfer<%= i %>.items.add(file<%= i %>);
+              document.querySelector('input[name="PrdAvatar"]').files = dataTransfer<%= i %>.files
+              document.querySelector('input[name="PrdAvatar"]').dispatchEvent(change)
+          })
+        <% else %>
+          const url<%= i %> = <%= inra(img.full_url) %>
+          const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+          fetch(url<%= i %>)
+            .then(async response => {
+              const contentType<%= i %> = response.headers.get('content-type')
+              const blob<%= i %> = await response.blob()
+              const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+              dataTransfer.items.add(file<%= i %>);
+          })
+
+          setTimeout(function () {
+            document.getElementById('UploadImg').files = dataTransfer.files
+            document.getElementById('UploadImg').dispatchEvent(change)
+          }, 500)
+        <% end %>
+      <% end %>
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>

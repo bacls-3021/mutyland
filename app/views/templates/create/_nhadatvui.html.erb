@@ -1,0 +1,52 @@
+<span class="step">Bước 1 Đăng nhập</span>
+<p> Mở tab mới <a href="https://nhadatvui.vn/login">https://nhadatvui.vn/login</a></p>
+Đăng nhập bằng google
+
+<span class="step">Bước 2 Đăng bài</span>
+<p>Vào <a href="https://tinbds.com/themmoi/">https://tinbds.com/themmoi/</a></p>
+<div class="box">
+  <code class="hightlight">
+    Array.from($('#category_id').next().find('span')).filter(a => a.innerText.includes(<%= inra(product.specific_type_product('nhadatvui')) %>))[0].click()
+    Array.from($('#pay_day_id').next().find('span'))[1].click()
+    $('input[name="product[product_name]"').val(<%= inra(product.title) %>)
+    window.parent.tinyMCE.get('content-txt').setContent(<%= inra(product.description) %>)
+
+    Array.from($('#province_id').next().find('span')).filter(a => a.innerText.includes(<%= inra(product.province) %>))[0].click()
+    setTimeout(function () {
+      Array.from($('#district_id').next().find('span')).filter(a => a.innerText.includes(<%= inra(product.district) %>))[0].click()
+      setTimeout(function () {
+        Array.from($('#ward_id').next().find('span')).filter(a => a.innerText.includes(<%= inra(product.town) %>))[0].click()
+      }, 500)
+    }, 500)
+
+    setTimeout(function () {
+      $('input[name="product[estate_area]"').val(<%= inra(product.area) %>)
+      $('input[name="product[price_unit]"').val(<%= inra(product.price * 1000) %>)
+      $('input[name="product[estate_height]"').val(<%= inra(product.height) %>)
+      $('input[name="product[estate_width]"').val(<%= inra(product.width) %>)
+    }, 2000)
+
+    var change = new Event('change')
+    var dataTransfer = new DataTransfer();
+    <% product.product_images.each_with_index do |img, i| %>
+      <% break if i == 12 %>
+      const url<%= i %> = <%= inra(img.full_url) %>
+      const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+      fetch(url<%= i %>)
+        .then(async response => {
+          const contentType<%= i %> = response.headers.get('content-type')
+          const blob<%= i %> = await response.blob()
+          const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+          dataTransfer.items.add(file<%= i %>);
+      })
+    <% end %>
+
+    setTimeout(function(){
+      document.getElementById('fileupload-image').files = dataTransfer.files
+      document.getElementById('fileupload-image').dispatchEvent(change)
+    }, 1000)
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>

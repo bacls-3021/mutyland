@@ -1,0 +1,70 @@
+<p class="color-red">Trang web này có bước lấy kết quả hơi phức tạp(do thằng lập trình web ngu)</p>
+<span class="step">Bước 1 Đăng ký</span>
+<p>Vào <a href="https://batdongsan.vn/register"> https://batdongsan.vn/register</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('input[name="name"]').val(<%= inra(product.name) %>)
+    $('input[name="phone"]').val(<%= inra(product.phone) %>)
+    $('input[name="email"]').val(<%= inra(product.email_fake) %>)
+    $('input[name="password"]').val('Ketcdlena1@@')
+    $('input[name="repassword"]').val('Ketcdlena1@@')
+    $('button[name="register"').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng bài</span>
+<p> Mở tab mới <a href="https://batdongsan.vn/dang-tin">https://batdongsan.vn/dang-tin</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('input[name="name"]').val(<%= inra(product.title) %>)
+    $('textarea[name="content"]').val((<%= inra(product.description) %>).replaceAll("&lt;br/&gt;", "\r\n"))
+    $('input[name="acreage"]').val(<%= inra(product.area) %>)
+    $('input[name="price"]').val(<%= inra(product.price.to_f/ 1000000) %>)
+    $('select[name="unit"]').val(3)
+    $('input[name="address"]').val(<%= inra(product.full_address) %>)
+    $('input[name="bedroom"]').val(<%= inra(product.count_bed) %>)
+    $('input[name="user_name"]').val(<%= inra(product.name) %>)
+    $('input[name="user_phone"]').val(<%= inra(product.phone) %>)
+
+    $('select[name="homedirection"]').val(Array.from($("select[name='homedirection']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.direction) %>))[0].value)
+
+    $('select[name="typeid"]').val(Array.from($("select[name='typeid']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.specific_type_product('batdongsan')) %>))[0].value)
+
+    $('select[name="cityid"]').val(Array.from($("select[name='cityid']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value)
+    $('select[name="cityid"]').trigger('change')
+    setTimeout(function () {
+      $('select[name="districtid"]').val(Array.from($("select[name='districtid']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+      $('select[name="districtid"]').trigger('change')
+      setTimeout(function () {
+        $('select[name="wardid"]').val(Array.from($("select[name='wardid']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+      }, 500);
+    }, 500);
+
+    var change = new Event('change')
+    <% @product.product_images.each_with_index do |img, i| %>
+      setTimeout(function () {
+        const url<%= i %> = <%= inra(img.full_url) %>
+        const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+        fetch(url<%= i %>)
+          .then(async response => {
+            const contentType<%= i %> = response.headers.get('content-type')
+            const blob<%= i %> = await response.blob()
+            const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+
+            const dataTransfer<%= i %> = new DataTransfer();
+            dataTransfer<%= i %>.items.add(file<%= i %>);
+            document.querySelector('input[name="file"]').files = dataTransfer<%= i %>.files
+            document.querySelector('input[name="file"]').dispatchEvent(change)
+        })
+      }, <%= (i+1) * 500 %>);
+    <% end %>
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+<span class="step">Bước 3: Lấy kết quả</span>
+Click vào tên tài khoản góc phải bên trên màn hình hoặc vào link <a href="https://batdongsan.vn/profile"> https://batdongsan.vn/profile </a> <br/>
+Click vào đường link ở <b>Tên người dùng </b> <br/>
+Click vào bài viết mới đăng để lấy link

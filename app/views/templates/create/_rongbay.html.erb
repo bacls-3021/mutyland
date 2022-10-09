@@ -1,0 +1,51 @@
+<p> Mở tab mới <a href="https://rongbay.com/dang_tin_rao_vat.html">https://rongbay.com/dang_tin_rao_vat.html</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<p class='color-red'> Trang web này up hình khá lâu, khoảng 10 giây chờ ảnh được up hết thì mới bấm submit </p>
+<div class="box">
+  <code class="hightlight">
+    $('li.menu_15').click();
+    [...document.querySelectorAll("ul.step_3 a")].filter(a => a.innerText == <%= inra(@product.specific_type_product('rongbay')) %>)[0].click();
+
+    setTimeout(function () {
+      $('input#ad_title').val(<%= inra(@product.title) %>);
+      $('select[name="data[id_cities]"]').val(Array.from($("select[name='data[id_cities]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.specific_province('rongbay')) %>))[0].value)
+      $('select[name="data[id_cities]"]').trigger('change')
+      $('input[name="data[field_extra][dientich]"]').val(<%= inra(@product.area) %>)
+      $('#price_bds').val(<%= inra(@product.price.to_f/1000000) %>)
+      window.parent.tinyMCE.get('description').onLoad.dispatch();
+      tinymce.activeEditor.setContent("<%= @product.description %>");
+      Array.from($('ul.box_info_right li')).filter(a => a.title == <%= inra(@product.direction) %>)[0].click()
+      $('input[name="data[job_contact_fullname]"]').val(<%= inra(@product.name) %>)
+      $('input[name="data[ad_mobile]"]').val(<%= inra(@product.phone) %>)
+      setTimeout(function () {
+        $('select[name="data[id_districs]"]').val(Array.from($("select[name='data[id_districs]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+        $('select[name="data[id_districs]"]').trigger('change')
+        setTimeout(function () {
+          $('input[name="data[txt_address]"]').val(<%= inra(@product.full_address) %>)
+        }, 500);
+      }, 500);
+
+      var change = new Event('change')
+      <% @product.product_images.each_with_index do |img, i| %>
+        setTimeout(function () {
+          const url<%= i %> = <%= inra(img.full_url) %>
+          const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+          fetch(url<%= i %>)
+            .then(async response => {
+              const contentType<%= i %> = response.headers.get('content-type')
+              const blob<%= i %> = await response.blob()
+              const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+
+              const dataTransfer<%= i %> = new DataTransfer();
+              dataTransfer<%= i %>.items.add(file<%= i %>);
+              document.getElementById('photo').files = dataTransfer<%= i %>.files
+              document.getElementById('photo').dispatchEvent(change)
+          })
+        }, <%= (i+1) * 500 %>);
+      <% end %>
+    }, 500);
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>

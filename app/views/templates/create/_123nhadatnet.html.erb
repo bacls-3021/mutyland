@@ -1,0 +1,101 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://123nhadat.net/register">https://123nhadat.net/register</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#Users_email').val(<%= inra(product.email_fake) %>)
+    $('#Users_full_name').val(<%= inra(product.name) %>)
+    $('#Users_bio').val(<%= inra(product.account) %>)
+    $('#Users_temp_password').val('Ketcdlena1@@')
+    $('#Users_password_confirm').val('Ketcdlena1@@')
+    $('#Users_phone').val(<%= inra(product.phone) %>)
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng nhập</span>
+<p>Vào <a href="https://123nhadat.net/login"> https://123nhadat.net/login</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#LoginForm_email').val(<%= inra(product.email_fake) %>)
+    $('#LoginForm_password').val('Ketcdlena1@@')
+    $('#login').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 3 Đăng bài</span>
+<p>Vào <a href="https://123nhadat.net/member/site/dangtin"> https://123nhadat.net/member/site/dangtin</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#Property_name').val(<%= inra(product.title) %>)
+    CKEDITOR.instances['Property_description'].setData(<%= inra(product.description) %>)
+    $('#Property_type_id').val(1)
+    $('#Property_type_id').trigger('change')
+    $('select#Property_category_id').val(Array.from($('#Property_category_id').find('option')).filter(a => a.innerText.includes(<%= inra(product.specific_type_product('batdongsan')) %>))[0].value)
+    $('#street').val(<%= inra(product.full_address) %>)
+    $('select#Property_city_id_dangtin').val(Array.from($('#Property_city_id_dangtin').find('option')).filter(a => a.innerText.includes(<%= inra(product.specific_province('rongbay')) %>))[0].value)
+
+    $('select#Property_city_id_dangtin').trigger('change')
+
+    setTimeout(function () {
+      $('select#Property_district_id_dangtin').val(Array.from($('#Property_district_id_dangtin').find('option')).filter(a => a.innerText.includes(<%= inra(product.district) %>))[0].value)
+      $('#Property_donvitinh').val(1)
+    }, 500);
+    $('input#Property_area').val(<%= inra(product.area) %>)
+    $('input#Property_price').val(<%= inra(product.price.to_f/1000000) %>)
+    $('#Property_tinhtrangphaply').val(2)
+    $('select#Property_huongnha').val(Array.from($('#Property_huongnha').find('option')).filter(a => a.innerText == <%= inra(product.direction) %>)[0].value)
+    $('#Property_floor').val(<%= inra(product.count_floor) %>)
+    $('#Property_bed_room').val(<%= inra(product.count_bed) %>)
+    $('#Property_dientichkhuonvien').val(<%= inra("#{product.width} x #{product.height}") %>)
+
+    var change = new Event('change')
+    var dataTransfer = new DataTransfer();
+
+    <% product.product_images.each_with_index do |img, i| %>
+      <% break if i == 6 %>
+      <% if i == 0 %>
+        const url<%= i %> = <%= inra(img.full_url) %>
+        const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+        fetch(url<%= i %>)
+          .then(async response => {
+            const contentType<%= i %> = response.headers.get('content-type')
+            const blob<%= i %> = await response.blob()
+            const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+
+            const dataTransfer<%= i %> = new DataTransfer();
+            dataTransfer<%= i %>.items.add(file<%= i %>);
+            document.querySelector('input[name="anhdaidien"]').files = dataTransfer<%= i %>.files
+            document.querySelector('input[name="anhdaidien"]').dispatchEvent(change)
+        })
+      <% else %>
+        setTimeout(function(){
+          const url<%= i %> = <%= inra(img.full_url) %>
+          const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+          fetch(url<%= i %>)
+            .then(async response => {
+              const contentType<%= i %> = response.headers.get('content-type')
+              const blob<%= i %> = await response.blob()
+              const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+              dataTransfer.items.add(file<%= i %>);
+          })
+        }, <%= i * 500 %>)
+
+        setTimeout(function(){
+          document.querySelector('input[name="files[]"]').files = dataTransfer.files
+          document.querySelector('input[name="files[]"]').dispatchEvent(change)
+        }, <%= product.product_images.count * 500 %>)
+      <% end %>
+    <% end %>
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+
+<span class="step">Bước 4 Lấy tin</span>
+<p>Vào <a href="https://123nhadat.net/member/site/danhsachtinrao/type/0"> https://123nhadat.net/member/site/danhsachtinrao/type/0</a></p>
+Click vào tin mới đăng để lấy tin

@@ -1,0 +1,113 @@
+<div class="container">
+  <span class="step">Bước 1 Đăng ký</span>
+  <p> Mở tab mới <a href="https://alonhadat.com.vn">alonhadat.com.vn</a></p>
+  <p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+  <div class="box">
+    <code class="hightlight">
+      document.getElementsByClassName('register')[0].click()
+      setTimeout(function () {
+        document.getElementById('account').value = 'mutiland-zxc-11'
+        document.getElementById('password1').value = 'Ketcdlena1@@'
+        document.getElementById('password2').value = 'Ketcdlena1@@'
+        document.getElementById('username').value = 'Nguyen Ngoc Anh'
+        document.getElementById('phone1').value = '0868027415'
+        document.getElementsByClassName('no-email')[0].click()
+        document.getElementById('register_province').value = 1
+        var change = new Event('change');
+        document.getElementById('register_province').dispatchEvent(change);
+        document.getElementById('agent1').click()
+        setTimeout(function () {
+          document.getElementById('register_district').value = 416
+        }, 500);
+      }, 1000);
+    </code>
+    <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+  </div>
+
+  <input id="imgtest" type="file" onChange=onFileSelected(event) >
+  <input id="imgtest2" type="file">
+
+  <img id="myimage" src="#" >
+
+
+  <span class="step">Bước 2 Đăng bài</span>
+  <p>Vào <a href="https://alonhadat.com.vn/dang-tin-nha-dat.html"> https://alonhadat.com.vn/dang-tin-nha-dat.html</a></p>
+  <div class="box">
+    <code class="hightlight">
+      document.getElementsByClassName('login')[0].click()
+      document.getElementById('account').value = 'mutiland-zxc-11'
+      document.getElementById('password').value = 'Ketcdlena1@@'
+      document.getElementsByClassName('login')[1].click()
+    </code>
+    <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+  </div>
+</div>
+<style>
+  code {
+    color: #24292e;
+    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    word-wrap: break-word;
+  }
+
+  .box {
+    margin: 1em 0;
+    background-color: #f1f2f3;
+    border: 1px solid #e5e5e5;
+    position: relative;
+  }
+
+  .copy {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .step {
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 0.3rem;
+  }
+
+</style>
+
+<script type="text/javascript">
+  function copy(element){
+    var copy = element.closest('.box').querySelector('.hightlight').innerText.trim().replace("      ", "")
+
+    navigator.clipboard.writeText(copy);
+  }
+
+  function onFileSelected(event) {
+    var selectedFile = event.target.files[0];
+    var reader = new FileReader();
+
+    var imgtag = document.getElementById("myimage");
+    imgtag.title = selectedFile.name;
+
+    reader.onload = function(event) {
+      imgtag.src = event.target.result;
+      let list = new DataTransfer();
+      // list.items.add(selectedFile);
+      // let myFileList = list.files;
+      // $('#imgtest2').files = myFileList;
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(selectedFile);
+      document.getElementById('imgtest2').files = dataTransfer.files
+    };
+
+    reader.readAsDataURL(selectedFile);
+
+
+  }
+
+</script>

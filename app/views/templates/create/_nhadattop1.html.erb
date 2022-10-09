@@ -1,0 +1,84 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://nhadattop1.com/dang-ky.htm?url_back=L2Rhbmcta3kuaHRtPw==">https://nhadattop1.com/dang-ky.htm?</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#user_name').val(<%= inra(product.name) %>)
+    $('#use_phone').val(<%= inra(product.phone) %>)
+    $('#user_email').val(<%= inra(product.email_fake) %>)
+    $('#user_pass').val('Ketcdlena1@@')
+    $('#user_re_pass').val('Ketcdlena1@@')
+    $('.btnRegister.btnSubmit').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng nhập</span>
+<p>Vào <a href="https://nhadattop1.com/dang-nhap.htm?url_back=L2RhbmctdGluLWNhbi1iYW4tbmhhLXJpZW5nLXBvc3QyLmh0bQ==">https://nhadattop1.com/dang-nhap.htm?url_back=L2RhbmctdGluLWNhbi1iYW4tbmhhLXJpZW5nLXBvc3QyLmh0bQ==</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#user_email').val(<%= inra(product.email_fake) %>)
+    $('#user_pass').val('Ketcdlena1@@')
+    $('.btnLogin.btnSubmit').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng bài</span>
+<% case product.type_product %>
+<% when 'Nhà trong hẻm' %>
+  <% link = "https://nhadattop1.com/dang-tin-can-ban-nha-rieng-post2.htm" %>
+<% when 'Nhà mặt tiền' %>
+  <% link = "https://nhadattop1.com/dang-tin-can-ban-nha-mat-pho-post4.htm" %>
+<% when 'Căn hộ chung cư' %>
+  <% link = "https://nhadattop1.com/dang-tin-can-ban-can-ho-chung-cu-post1.htm" %>
+<% when 'Biệt thự, nhà liền kề' %>
+  <% link = "https://nhadattop1.com/dang-tin-can-ban-nha-biet-thu-lien-ke-post3.htm" %>
+<% when 'Đất thổ cư, đất ở' %>
+  <% link = "https://nhadattop1.com/dang-tin-can-ban-dat-post6.htm" %>
+<% end %>
+<p>Vào <a href="<%= link %>"><%= link %></a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#pro_title').val(<%= inra(product.title) %>)
+    $('#pro_description').val(<%= inra(product.base_description) %>)
+
+    $('#pro_city_pa_id').val(Array.from($('#pro_city_pa_id').find('option')).filter(a => a.innerText.includes(<%= inra(product.province) %>))[0].value)
+    $('#pro_city_pa_id').trigger('change')
+    setTimeout(function(){
+      $('#pro_city_id').val(Array.from($('#pro_city_id').find('option')).filter(a => a.innerText.includes(<%= inra(product.district) %>))[0].value)
+      $('#pro_city_id').trigger('change')
+    }, 500)
+
+    $('#pro_user_addr').val(<%= inra(product.full_address) %>)
+    $('#pro_addr').val(<%= inra(product.full_address) %>)
+    $('#pro_acreage').val(<%= inra(product.area) %>)
+    $('#pro_price').val(<%= inra(product.price.to_f/1000000) %> + " tỷ" )
+
+    var change = new Event('change')
+    const dataTransfer = new DataTransfer();
+
+    <% product.product_images.each_with_index do |img, i| %>
+      setTimeout(function () {
+        const url<%= i %> = <%= inra(img.full_url) %>
+        const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+        fetch(url<%= i %>)
+          .then(async response => {
+            const contentType<%= i %> = response.headers.get('content-type')
+            const blob<%= i %> = await response.blob()
+            const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+            dataTransfer.items.add(file<%= i %>);
+        })
+      }, <%= (i+1) * 500 %>);
+    <% end %>
+
+    setTimeout(function () {
+      document.getElementById('photoimg').files = dataTransfer.files
+      document.getElementById('photoimg').dispatchEvent(change)
+      $('.btnSubmit').click()
+    }, <%= product.product_images.count * 500 + 500 %> );
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>

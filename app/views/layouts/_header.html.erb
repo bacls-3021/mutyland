@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid custom-nav">
+    <a class="navbar-brand" href="#">MUTILAND</a>
+    <% if current_user %>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= current_user.email %>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><%= link_to "Tạo product", new_product_path, class: "dropdown-item" %></li>
+            <li><a class="dropdown-item" href="#">Quản lý Product</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><%= link_to "Đăng xuất", destroy_user_session_path, class: "dropdown-item", method: :delete %></li>
+          </ul>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</nav>
+
+<style type="text/css">
+  .custom-nav {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

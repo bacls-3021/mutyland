@@ -1,0 +1,85 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://bannhadat123.vn/user/auth/">https://bannhadat123.vn/user/auth/</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#RegistrationForm_email').val(<%= inra(product.email_fake) %>)
+    $('#RegistrationForm_password').val('Ketcdlena1@@')
+    $('#RegistrationForm_verifyPassword').val('Ketcdlena1@@')
+    $('#Profile_phone').val(<%= inra(product.phone) %>)
+    $('#Profile_display_name').val(<%= inra(product.name) %>)
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng tin</span>
+<p> Mở tab mới <a href="https://bannhadat123.vn/estate/create/">https://bannhadat123.vn/estate/create/</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#Estate_tieu_de').val(<%= inra(product.title) %>)
+    $('#Estate_mo_ta').val(<%= inra(product.base_description) %>)
+
+    <!-- cần fix -->
+    $('select[name="Estate[type_id]"]').val(Array.from($("select[name='Estate[type_id]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.specific_type_product('bannhadat123')) %>))[0].value)
+    $('select[name="Estate[type_id]"]').trigger('change')
+    setTimeout(function () {
+      $('select[name="Estate[sub_type_id]"]').val(Array.from($("select[name='Estate[sub_type_id]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.sub_specific_type_product('bannhadat123')) %>))[0].value)
+    }, 500)
+    <!-- cần fix -->
+
+    $('select[name="Estate[province_id]"]').val(Array.from($("select[name='Estate[province_id]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value)
+    $('select[name="Estate[province_id]"]').trigger('change')
+
+    setTimeout(function () {
+      $('select[name="Estate[district_id]"]').val(Array.from($("select[name='Estate[district_id]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+      $('select[name="Estate[district_id]"]').trigger('change')
+      setTimeout(function () {
+        $('select[name="Estate[ward_id]"]').val(Array.from($("select[name='Estate[ward_id]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+
+        <% if product.street %>
+          setTimeout(function(){
+            $('select[name="Estate[street_id]"]').val(Array.from($("select[name='Estate[street_id]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.street) %>))[0].value)
+          }, 500)
+        <% end %>
+      }, 500)
+    }, 500)
+
+    $('#Estate_dien_tich').val(<%= inra(product.area) %>)
+    $('#Estate_ngang').val(<%= inra(product.width) %>)
+    $('#Estate_doc').val(<%= inra(product.height) %>)
+    $('#Estate_gia').val(<%= inra(product.price.to_f / 1000000) %>)
+    $('#Estate_loai_tien_te').val(2)
+    $('select[name="Estate[huong]"]').val(Array.from($("select[name='Estate[huong]'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.direction) %>))[0].value)
+    $('#Estate_so_phong_ngu').val(<%= inra(product.count_bed) %>)
+    $('#Estate_so_tang').val(<%= inra(product.count_floor) %>)
+
+    var change = new Event('change')
+    var dataTransfer = new DataTransfer();
+
+    <% product.product_images.each_with_index do |img, i| %>
+      <% break if i == 5 %>
+      setTimeout(function(){
+        const url<%= i %> = <%= inra(img.full_url) %>
+        const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+        fetch(url<%= i %>)
+          .then(async response => {
+            const blob<%= i %> = await response.blob()
+            const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { type: 'image/jpeg'})
+            dataTransfer.items.add(file<%= i %>);
+        })
+      }, <%= (i+1) * 500 %>)
+    <% end %>
+    setTimeout(function () {
+      document.querySelector('input[name="image"]').files = dataTransfer.files
+      document.querySelector('input[name="image"]').dispatchEvent(change)
+    }, <%= product.product_images.count * 500 + 500 %> )
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+
+<p class="step">Bước 3 Lấy kết quả</p>
+Kích hoạt tin với loại miễn phí xong
+<p> Mở tab mới <a href="https://bannhadat123.vn/estate/admin/">https://bannhadat123.vn/estate/admin/</a></p> để lấy

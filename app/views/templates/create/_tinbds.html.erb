@@ -1,0 +1,77 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://tinbds.com/dangky/">https://tinbds.com/dangky/</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#email').val(<%= inra(product.email_fake) %>)
+    $('#txtFullname').val(<%= inra(product.name) %>)
+    $('#txtPassword').val('Ketcdlena1@@')
+    $('#txtConfirmPassword').val('Ketcdlena1@@')
+    $('#txtMobile').val(<%= inra(product.phone) %>)
+    $('select#ddlCities').val('b')
+    $('select#ddlCities').trigger('change')
+    setTimeout(function () {
+      $('select#ddlDistricts').val('bp')
+      $('select#ddlDistricts').trigger('change')
+      setTimeout(function () {
+        $('select#ddlWard').val('cyk')
+        $('input[name="btnRegister"]').click()
+      }, 500)
+    }, 500)
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng bài</span>
+<p>Vào <a href="https://tinbds.com/themmoi/">https://tinbds.com/themmoi/</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#name1').val(<%= inra(product.title) %>)
+    $('#fcontent').val(<%= inra(product.base_description) %>)
+    $('#floai').val(Array.from($('#floai').find('option')).filter(a => a.innerText.includes(<%= inra(product.specific_type_product('tinbds')) %>))[0].value)
+    $('#fdientich').val(<%= inra(product.area) %>)
+    $('#txtPrice').val(<%= inra(product.price.to_f/1000000) %>)
+    $('#ddlPriceType').val('2')
+
+    $('#ddlCity').val(Array.from($('#ddlCity').find('option')).filter(a => a.innerText.includes(<%= inra(product.province) %>))[0].value)
+    $('select#ddlCity').trigger('change')
+    setTimeout(function () {
+      $('select#ddlDistrict').val(Array.from($('#ddlDistrict').find('option')).filter(a => a.innerText.includes(<%= inra(product.district) %>))[0].value)
+      $('select#ddlDistrict').trigger('change')
+      setTimeout(function () {
+        $('select#ddlWard').val(Array.from($('#ddlWard').find('option')).filter(a => a.innerText.includes(<%= inra(product.town) %>))[0].value)
+        $('select#ddlWard').trigger('change')
+
+        <% if product.street %>
+          setTimeout(function () {
+            $('#ddlStreet').val(Array.from($('#ddlStreet').find('option')).filter(a => a.innerText.includes(<%= inra(product.street) %>))[0].value)
+          }, 500)
+        <% end %>
+      }, 500)
+    }, 500)
+
+    $('input[name="soPhongNgu"]').val(<%= inra(product.count_bed) %>)
+
+    var change = new Event('change')
+    var dataTransfer = new DataTransfer();
+    <% product.product_images.each_with_index do |img, i| %>
+      <% break if i == 6 %>
+      const url<%= i %> = <%= inra(img.full_url) %>
+      const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+      fetch(url<%= i %>)
+        .then(async response => {
+          const contentType<%= i %> = response.headers.get('content-type')
+          const blob<%= i %> = await response.blob()
+          const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+          dataTransfer.items.add(file<%= i %>);
+      })
+    <% end %>
+
+    setTimeout(function () {
+      document.getElementById('image_file').files = dataTransfer.files
+      document.getElementById('image_file').dispatchEvent(change)
+    }, 500)
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>

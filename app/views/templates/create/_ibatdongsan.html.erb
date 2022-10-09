@@ -1,0 +1,92 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="http://i-batdongsan.com">i-batdongsan.com</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    document.getElementsByClassName('register')[0].click()
+    setTimeout(function () {
+      document.getElementById('account').value = <%= inra(@product.account) %>
+      document.getElementById('password1').value = 'Ketcdlena1@@'
+      document.getElementById('password2').value = 'Ketcdlena1@@'
+      document.getElementById('username').value = <%= inra(@product.name) %>
+      document.getElementById('phone1').value = <%= inra(@product.phone) %>
+      document.getElementsByClassName('no-email')[0].click()
+      document.getElementById('register_province').value = 1
+      var change = new Event('change')
+      document.getElementById('register_province').dispatchEvent(change)
+      document.getElementById('agent1').click()
+      setTimeout(function () {
+        document.getElementById('register_district').value = 416
+      }, 500);
+    }, 1000);
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng bài</span>
+<p>Vào <a href="http://i-batdongsan.com/dang-tin-nha-dat.html"> http://i-batdongsan.com/dang-tin-nha-dat.html</a></p>
+<div class="box">
+  <code class="hightlight">
+    if (document.querySelector('.reg-menu-box .login')){
+      let login = document.getElementsByClassName('login')[0]
+      login.click()
+      document.getElementById('account').value = <%= inra(@product.account) %>
+      document.getElementById('password').value = 'Ketcdlena1@@'
+      document.getElementsByClassName('login')[1].click()
+    }
+
+    document.getElementById('tieude').value = <%= inra(@product.title) %>
+    document.getElementById('noidung').value = <%= inmota(@product.description) %>
+    document.getElementById('diachi').value = <%= inra(@product.address) %>
+    document.getElementById('dientich').value = <%= inra(@product.area) %>
+    document.getElementById('gia').value = <%= inra(@product.price) %>
+    document.getElementById('chieungang').value = <%= inra(@product.width) %>
+    document.getElementById('chieudai').value = <%= inra(@product.height) %>
+    document.getElementById('solau').value = <%= inra(@product.count_floor) %>
+    document.getElementById('sophongngu').value = <%= inra(@product.count_bed) %>
+    document.getElementById('loaitin').value = 1
+    document.getElementById('duongrong').value = <%= inra(@product.length_street) %>
+    document.getElementById('agree').click()
+
+    document.getElementById('huong').value = [...document.querySelectorAll("select#huong > option")].filter(a => a.innerText == <%= inra(@product.direction) %>)[0].value
+
+
+    document.getElementById('loaibds').value = [...document.querySelectorAll("select#loaibds > option")].filter(a => a.innerText.includes(<%= inra(@product.type_product) %>))[0].value
+    document.getElementById('tinh').value = [...document.querySelectorAll("select#tinh > option")].filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value
+    var change = new Event('change')
+    document.getElementById('tinh').dispatchEvent(change)
+    setTimeout(function () {
+      document.getElementById('huyen').value = [...document.querySelectorAll("select#huyen > option")].filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value
+      document.getElementById('huyen').dispatchEvent(change)
+      setTimeout(function () {
+        document.getElementById('phuong').value = [...document.querySelectorAll("select#phuong > option")].filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value
+
+        document.getElementById('phuong').dispatchEvent(change)
+        setTimeout(function () {
+          document.getElementById('street_acp_text').value = [...document.querySelectorAll(".street-acp-box > ul > li")].filter(a => a.innerText.includes(<%= inra(@product.street) %>))[0].innerText
+          document.getElementById('duong').value =  [...document.querySelectorAll("select#duong > option")].filter(a => a.innerText.includes(<%= inra(@product.street) %>))[0].value
+
+        }, 1000);
+      }, 1000);
+    }, 1000);
+
+
+    <% @product.product_images.each_with_index do |img, i| %>
+      <% break if i == 6 %>
+      const url<%= i %> = <%= inra(img.full_url) %>
+      const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+      fetch(url<%= i %>)
+        .then(async response => {
+          const contentType<%= i %> = response.headers.get('content-type')
+          const blob<%= i %> = await response.blob()
+          const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+
+          const dataTransfer<%= i %> = new DataTransfer();
+          dataTransfer<%= i %>.items.add(file<%= i %>);
+          document.getElementById('img<%= i + 1 %>').files = dataTransfer<%= i %>.files
+        })
+    <% end %>
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
