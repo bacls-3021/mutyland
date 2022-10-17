@@ -1,0 +1,143 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://www.dangtinbatdongsan.vn/signup.html">https://www.dangtinbatdongsan.vn/signup.html</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#Home1_ctl42_txtEmail').val(<%= inra(product.email_fake) %>)
+    $('#Home1_ctl42_txtPassword').val('Ketcdlena1@@')
+    $('#Home1_ctl42_txtConfirmPassword').val('Ketcdlena1@@')
+    $('#Home1_ctl42_txtPhone').val(<%= inra(product.phone) %>)
+    $('#Home1_ctl42_txtUsernames').val(<%= inra(@product.account) %>)
+    $('#Home1_ctl42_txtFullname').val(<%= inra(product.name) %>)
+    $('input[name="ctl00$Home1$ctl42$btnSend"').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng nhập</span>
+<p>Vào <a href="https://www.dangtinbatdongsan.vn/signin.html?ReturnUrl=/signup.html">https://www.dangtinbatdongsan.vn/signin.html?ReturnUrl=/signup.html</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#Home1_ctl26_txtUsername').val(<%= inra(product.account) %>)
+    $('#Home1_ctl26_txtPassword').val('Ketcdlena1@@')
+    $('#Home1_ctl26_btnLogin').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng tin</span>
+<p> Mở tab mới <a href="https://www.dangtinbatdongsan.vn/dang-tin.html">https://www.dangtinbatdongsan.vn/dang-tin.html</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#Home1_ctl43_txtTitle').val(<%= inra(product.title) %>)
+    document.getElementById('Home1_ctl43_ddlCategory').value = [...document.querySelectorAll("select#Home1_ctl43_ddlCategory > option")].filter(a => a.innerText.includes(<%= inra(@product.specific_type_product('dangtinbatdongsan')) %>))[0].value
+
+    const change = new Event ('change');
+
+    document.getElementById('Home1_ctl43_ddlLocation').value = [...document.querySelectorAll("select#Home1_ctl43_ddlLocation > option")].filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value
+    document.getElementById('Home1_ctl43_ddlLocation').dispatchEvent(change)
+    $("#Home1_ctl43_ddlLocation").change()
+
+    setTimeout(function () {
+      document.getElementById('Home1_ctl43_ddlDistrict').value = [...document.querySelectorAll("select#Home1_ctl43_ddlDistrict > option")].filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value
+      document.getElementById('Home1_ctl43_ddlDistrict').dispatchEvent(change)
+      $("#Home1_ctl43_ddlDistrict").change()
+
+      setTimeout(function () {
+        document.getElementById('Home1_ctl43_ddlWards').value = [...document.querySelectorAll("select#Home1_ctl43_ddlWards > option")].filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value
+
+        document.getElementById('Home1_ctl43_ddlWards').dispatchEvent(change)
+        $("#Home1_ctl43_ddlWards").change()
+
+        setTimeout(function () {
+
+          document.getElementById('Home1_ctl43_ddlStreet').value = [...document.querySelectorAll("select#Home1_ctl43_ddlStreet > option")].filter(a => a.innerText.includes(<%= inra(@product.street) %>))[0].value
+
+          document.getElementById('Home1_ctl43_ddlStreet').dispatchEvent(change)
+          $("#Home1_ctl43_ddlStreet").change()
+      }, 1000);
+      }, 1000);
+    }, 1000);
+
+
+    $('#Home1_ctl43_txtArea_NumericInput1').val(<%= inra(product.area) %>)
+    $('#Estate_ngang').val(<%= inra(product.width) %>)
+    $('#Estate_doc').val(<%= inra(product.height) %>)
+    $('#Home1_ctl43_txtPrice_NumericInput1').val(<%= inra(product.price) %>)
+    $('#Estate_loai_tien_te').val(2)
+
+    $('textarea[name="ctl00$Home1$ctl43$txtDescribe"]').val((<%= inra(product.title) %>).replaceAll("&lt;br/&gt;", "\r\n"))
+    $('textarea[name="ctl00$Home1$ctl43$txtContent"]').val((<%= inra(product.description) %>).replaceAll("&lt;br/&gt;", "\r\n"))
+
+    $('select[name="ctl00$Home1$ctl43$ddlAttributeValue3"]').val(Array.from($("select[name='ctl00$Home1$ctl43$ddlAttributeValue3'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.direction) %>))[0].value)
+
+    $('select[name="ctl00$Home1$ctl43$ddlAttributeValue5"]').val(Array.from($("select[name='ctl00$Home1$ctl43$ddlAttributeValue5'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.count_floor) %>))[0].value)
+
+    $('select[name="ctl00$Home1$ctl43$ddlAttributeValue6"]').val(Array.from($("select[name='ctl00$Home1$ctl43$ddlAttributeValue6'").find('option')).filter(a => a.innerText.includes(<%= inra(@product.count_bed) %>))[0].value)
+
+    $('#Home1_ctl43_txtAttributeValue1').val(<%= inra(product.area) %>)
+    $('#Home1_ctl43_rdoAttributeValue10_0').click()
+    $('#Home1_ctl43_txtMetaTitle').val(<%= inra(product.title) %>)
+    $('textarea[name="ctl00$Home1$ctl43$txtMetaDescription"]').val((<%= inra(product.description) %>).replaceAll("&lt;br/&gt;", "\r\n"))
+     $('textarea[name="ctl00$Home1$ctl43$txtMetaKeywords"]').val(('Bán nhà, Bán đất').replaceAll("&lt;br/&gt;", "\r\n"))
+    $('#Home1_ctl43_txtProductAddress').val(<%= inra("#{product.town}, #{product.district}, #{product.province}") %>)
+
+
+
+<!-- Không upload được ảnh -->
+    var change = new Event('change')
+    var dataTransfer = new DataTransfer();
+    const xhr = new XMLHttpRequest();
+
+
+    <% product.product_images.each_with_index do |img, i| %>
+      <% break if i == 12 %>
+      const url<%= i %> = <%= inra(img.full_url) %>
+      const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+      fetch(url<%= i %>)
+        .then(async response => {
+          const contentType<%= i %> = response.headers.get('content-type')
+          const blob<%= i %> = await response.blob()
+          const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+          dataTransfer.items.add(file<%= i %>);
+      })
+      setTimeout(function(){
+        document.getElementById('Home1_ctl43_uploadFile_fileupload').files = dataTransfer.files
+        document.getElementById('Home1_ctl43_uploadFile_fileupload').dispatchEvent(change)
+        $("#Home1_ctl43_uploadFile_fileupload").change()
+        const fd = dataTransfer.files
+        xhr.open('POST', '/path/to/server', true);
+        xhr.send(fd);
+      }, 1000)
+
+
+      const input = document.querySelector('input[type="file"]');
+      input.addEventListener('change', (e) => {
+
+        const fd = new FormData();
+
+        e.target.files.forEach((file) => {
+          fd.append(e.target.name, file, file.name);
+        });
+
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+              // we done!
+          }
+        };
+      fd.append("fileToUpload[]", document.getElementById('fileToUpload').files[x]);
+        xhr.open('POST', '/path/to/server', true);
+        xhr.send(fd);
+    <% end %>
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+
+<p class="step">Bước 3 Lấy kết quả</p>
+Kích hoạt tin với loại miễn phí xong
+<p> Mở tab mới <a href="https://bannhadat123.vn/estate/admin/">https://bannhadat123.vn/estate/admin/</a></p> để lấy

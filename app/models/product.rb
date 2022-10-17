@@ -97,6 +97,45 @@ class Product < ApplicationRecord
       when 'Đất thổ cư, đất ở'
         'nhà đất nền'
       end
+    when 'muabannhadatnhanh'
+      case type_product
+      when 'Nhà trong hẻm'
+        'Bán nhà trong hẻm'
+      when 'Nhà mặt tiền'
+        'Bán đất mặt tiền'
+      when 'Căn hộ chung cư'
+        'Bán căn hộ chung cư'
+      when 'Biệt thự, nhà liền kề'
+        'Bán biệt thự'
+      when 'Đất thổ cư, đất ở'
+        'Bán đất thổ cư'
+      end
+    when 'dangtinbatdongsan'
+      case type_product
+      when 'Nhà trong hẻm'
+        'Nhà riêng'
+      when 'Nhà mặt tiền'
+        'Nhà mặt phố'
+      when 'Căn hộ chung cư'
+        'Căn hộ chung cư'
+      when 'Nhà biệt thự, liền kề'
+        'Bán biệt thự'
+      when 'Đất thổ cư, đất ở'
+        'Đất'
+      end
+    when 'datviet'
+      case type_product
+      when 'Nhà trong hẻm'
+        'Bán nhà riêng'
+      when 'Nhà mặt tiền'
+        'Bán nhà mặt phố'
+      when 'Căn hộ chung cư'
+        'Căn hộ chung cư'
+      when 'Nhà biệt thự, liền kề'
+        'Bán nhà biệt thự, liền kề'
+      when 'Đất thổ cư, đất ở'
+        'Bán đất'
+      end
     end
   end
 

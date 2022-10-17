@@ -1,0 +1,48 @@
+Chưa upload được ảnh
+
+<span class="step">Bước 1 Đăng nhập</span>
+<p>Vào <a href="https://datviet24h.com.vn/dang-nhap.html"> https://datviet24h.com.vn/dang-nhap.html</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('input[name="username"]').val('bacxa1@gmail.com')
+    $('input[name="password"]').val('Ketcdlena1@@')
+    $('input[name="submitbt"]').click()
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng bài</span>
+<p>Vào <a href="https://datviet24h.com.vn/dang-tin-bds.html"> https://datviet24h.com.vn/dang-tin-bds.html</a></p>
+<div class="box">
+  <code class="hightlight">
+    $('#txt_names').val(<%= inra(product.title) %>)
+
+    $('select#cat_id').val(Array.from($('#cat_id').find('option')).filter(a => a.innerText.includes(<%= inra(product.specific_type_product('datviet')) %>))[0].value)
+
+
+    $('select[name="city_id"]').val(Array.from($("select[name='city_id']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value)
+    $('select[name="city_id"]').trigger('change')
+    setTimeout(function () {
+      $('select[name="district_id"]').val(Array.from($("select[name='district_id']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+      $('select[name="district_id"]').trigger('change')
+      setTimeout(function () {
+        $('select[name="ward_id"]').val(Array.from($("select[name='ward_id']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+      }, 500);
+    }, 500);
+
+    $('input#price').val(<%= inra(product.price) %>)
+    $('input#acreages_id').val(<%= inra(product.area) %>)
+    $('select#direction_id').val(Array.from($('#direction_id').find('option')).filter(a => a.innerText == <%= inra(product.direction) %>)[0].value)
+    $('#inlineCheckbox2').click()
+    $('textarea[name="txt_customer_history"]').val((<%= inra(product.description) %>).replaceAll("&lt;br/&gt;", "\r\n"))
+
+    var change = new Event('change')
+    var dataTransfer = new DataTransfer();
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+
+<span class="step">Bước 3 Lấy tin</span>
+<p>Vào <a href="https://123nhadat.net/member/site/danhsachtinrao/type/0"> https://123nhadat.net/member/site/danhsachtinrao/type/0</a></p>
+Click vào tin mới đăng để lấy tin
