@@ -1,0 +1,78 @@
+<span class="step">Bước 1 Đăng ký</span>
+<p> Mở tab mới <a href="https://chuyennhadat.com.vn/dang-ky.htm">https://chuyennhadat.com.vn/dang-ky.htm</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('#txtEmail').val(<%= inra(product.email_fake) %>)
+    $('#txtMatkhau').val('Ketcdlena1@@')
+    $('#txtNhaplaimatkhau').val('Ketcdlena1@@')
+    $('#txtDidong').val(<%= inra(product.phone) %>)
+    $('#txtTendaydu').val(<%= inra(product.name) %>)
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+<span class="step">Bước 2 Đăng tin</span>
+<p> Mở tab mới <a href="https://chuyennhadat.com.vn/dang-tin-ban-cho-thue-nha-dat.htm">https://chuyennhadat.com.vn/dang-tin-ban-cho-thue-nha-dat.htm</a></p>
+<p> Bấm F12, vào tab console dán dòng code dưới đây rồi gõ Enter </p>
+<div class="box">
+  <code class="hightlight">
+    $('select[id="cboCityPost"]').val(Array.from($("select[id='cboCityPost']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.province) %>))[0].value)
+    $('select[id="cboCityPost"]').trigger('change')
+    setTimeout(function () {
+      $('select[id="cboDistrictPost"]').val(Array.from($("select[id='cboDistrictPost']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.district) %>))[0].value)
+      $('select[id="cboDistrictPost"]').trigger('change')
+      setTimeout(function () {
+        $('select[id="cboWardPost"]').val(Array.from($("select[id='cboWardPost']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.town) %>))[0].value)
+        $('select[id="cboWardPost"]').trigger('change')
+
+          setTimeout(function () {
+          $('select[id="cboStreetPost"]').val(Array.from($("select[id='cboStreetPost']").find('option')).filter(a => a.innerText.includes(<%= inra(@product.street) %>))[0].value)
+          $('select[id="cboStreetPost"]').trigger('change')
+        }, 500);
+      }, 500);
+    }, 500);
+
+
+    $('input#txtGia').val(<%= inra(product.price) %>)
+    $('input#txtDientich').val(<%= inra(product.area) %>)
+    $('input#txtMattien').val(<%= inra(product.area) %>)
+    $('select#cboDirectionPost').val(Array.from($('#cboDirectionPost').find('option')).filter(a => a.innerText == <%= inra(product.direction) %>)[0].value)
+    $('#txtSotang').val(<%= inra(product.count_floor) %>)
+    $('#txtTieude').val(<%= inra(product.title) %>)
+    $('textarea[name="ctl00$MainContent$Member_PostNews$tarNoidung"]').val((<%= inra(product.description) %>).replaceAll("&lt;br/&gt;", "\r\n"))
+
+    $('#txtHovaten').val(<%= inra(product.name) %>)
+    $('#txtDiachi').val(<%= inra(product.address) %>)
+    $('#txtDienthoai').val(<%= inra(product.phone) %>)
+    $('#txtDidong').val(<%= inra(product.phone) %>)
+
+
+    const dataTransfer = new DataTransfer();
+    const change = new Event ('change');
+   <% product.product_images.each_with_index do |img, i| %>
+      <% break if i == 6 %>
+      const url<%= i %> = <%= inra(img.full_url) %>
+      const fileName<%= i %> = <%= inra("myFile#{i}.jpg") %>
+
+      fetch(url<%= i %>)
+        .then(async response => {
+          const contentType<%= i %> = response.headers.get('content-type')
+          const blob<%= i %> = await response.blob()
+          const file<%= i %> = new File([blob<%= i %>], fileName<%= i %>, { contentType<%= i %> })
+          dataTransfer.items.add(file<%= i %>);
+      })
+      setTimeout(function(){
+        document.getElementById('secleimg').files = dataTransfer.files
+        document.getElementById('secleimg').dispatchEvent(change)
+      }, 1000)
+    <% end %>
+
+  </code>
+  <button class="btn btn-primary copy" onClick="copy(this)">Copy</button>
+</div>
+
+
+<p class="step">Bước 3 Lấy kết quả</p>
+Kích hoạt tin với loại miễn phí xong
+<p> Mở tab mới <a href="https://bannhadat123.vn/estate/admin/">https://bannhadat123.vn/estate/admin/</a></p> để lấy
