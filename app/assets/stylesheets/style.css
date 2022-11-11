@@ -36,3 +36,32 @@ p {
 .color-red {
   color: red;
 }
+.frames{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.button-up:hover{
+  border: solid 2px #87CEFF ;
+}
+
+.frames img{
+  width: 100px;
+  height: 100px;
+}
+
+.parent-image{
+  width: 100px;
+  height: 100px;
+  border: solid 1px #a4a4a4;
+  margin-left: 20px;
+}
+
+.button-up{
+  width: 100px;
+  height: 100px;
+  border: 1px dashed #a4a4a4;
+}
+

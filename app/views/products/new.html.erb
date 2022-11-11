@@ -128,14 +128,18 @@
     <h4>Link ảnh</h4>
 
     <div class="row" id="image-list">
-      <div class="col-6 mb-3">
+      <div class="upload-img">
         <%= form.fields_for :product_images do |f| %>
           <label>Link ảnh</label>
-          <%= f.file_field :image, accept: "image/jpeg, image/gif, image/png, image/jpg", class: "form-control" %>
+          <%= f.file_field :image, accept: "image/jpeg, image/gif, image/png, image/jpg", class: "form-control hello0 hidden" %>
         <% end %>
+        <div class="frames">
+          <div onClick=addMoreImage() class="button-up">
+            <%= image_tag("images-removebg-preview.png") %>
+          </div>
+        </div>
       </div>
     </div>
-
 
     <div class="col-6 mb-3">
       <label></label>
@@ -153,13 +157,18 @@
     font-weight: 600;
   }
 </style>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
+  $(".hidden").hide();
   function addMoreImage(){
     var n = $("#image-list > div").length
-
-    var text = "<div class='col-6 mb-3'><label>Link ảnh</label><input accept='image/jpeg, image/gif, image/png, image/jpg' class='form-control' type='file' name='product[product_images_attributes][" + n + "][image]' id='product_product_images_attributes_" + n + "_image'></div>"
-
+    $( ".hello"+ (n-1) +"" ).click();
+    $('input[type="file"]').change(function(){
+      var image = window.URL.createObjectURL(this.files[0]);
+    $( ".frames").append('<div class="parent-image"><img src="'+image+'" /></div>');
+    });
+    var text = "<div class='col-6 mb-3'><label></label><input accept='image/jpeg, image/gif, image/png, image/jpg' class='form-control hidden hello" + n + "' type='file' name='product[product_images_attributes][" + n + "][image]' id='product_product_images_attributes_" + n + "_image'></div>"
     $("#image-list").append(text)
+    $(".hidden").hide();
   }
 </script>
